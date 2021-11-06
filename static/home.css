@@ -1,4 +1,8 @@
-
+header {
+    height: 50px;
+    width: 100%;
+    background-color: aqua;
+}
 /* top navigation bar */
 ul {
   list-style-type: none;
@@ -41,6 +45,10 @@ main {
 
 main label {
   font-size: 7rem;
+}
+
+input {
+    border: 5px solid aqua;
 }
 
 .submit-button {
