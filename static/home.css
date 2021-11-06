@@ -1,7 +1,15 @@
 header {
-    height: 50px;
+    /* height: 50px; */
     width: 100%;
-    background-color: aqua;
+    background-color: lightblue;
+    font-family: Impact, Haettenschweiler, 'Arial Narrow Bold', sans-serif;
+}
+
+header h1 {
+    margin: 30px;
+    padding: 30px;
+    background-color: lightblue;
+
 }
 /* top navigation bar */
 ul {
@@ -33,22 +41,33 @@ li a:hover:not(.active) {
   background-color: white;
 }
 
+/* Main area! */
 main {
-  height: 450px;
+  height: 800px;
   background-color: black;
   display: flex;
   flex-flow: column nowrap;
-  justify-content: center;
+  /* justify-content: center; */
   align-items: center;
   color: white;
 }
 
+main p {
+    width: 50%;
+    font-size: 2vw;
+    /* text-indent: 4%; */
+    margin: 0.6%;
+    text-align: center;
+}
+
 main label {
-  font-size: 7rem;
+  font-size: 5rem;
+  margin-top: 40px;
+  margin-bottom: 20px;
 }
 
 input {
-    border: 5px solid aqua;
+    border: 5px solid lightblue;
 }
 
 .submit-button {
@@ -56,17 +75,23 @@ input {
   height: auto;
   background-color: white;
 /*   margin: 20vh auto; */
-  position: absolute;
-  top: 70%;
-  left: 50%;
+  /* position: absolute; */
+  /* top: 90%; */
+  /* left: 50%; */
   transform: translate(-50%, -50%);
   border-radius: 4rem;
   padding: 10px;
 }
 
+button p {
+    margin: 0;
+    font-weight: 1000;
+    font-size: larger;
+}
 
 
 
+/* footer */
 
 footer {
   font-size: 20px;
