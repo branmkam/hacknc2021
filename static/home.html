@@ -5,7 +5,7 @@
     <!-- Required meta tags -->
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-    <title>Assignment 6: Bootstrap 4 Layout</title>
+    <title>To be titled</title>
 
     <!-- Link to Bootstrap 4 CSS -->
     <!-- <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.0/css/bootstrap.min.css" integrity="sha384-9gVQ4dYFwwWSjIDZnLEWnxCjeSWFphJiwGPXr1jddIhOegiu1FwO5qRGvFXOdJZ4" crossorigin="anonymous"> -->
@@ -21,6 +21,32 @@
 
 </head>
 
+    <!-- Navigation Menu-->
 <body>
+	<header>
+	  <nav class="navigation-bar">
+	    <ul>
+          <li><a href="home.html">Home</a></li>
+          <li><a href="about.html">About</a></li>
+	    </ul>
+	  </nav>
+	</header>
 
+    <div class = "container">
+        <label for="file-input">Upload Your Recording Here!</label>
+        <input type="file" accept=".mov, .mp4, mp3" id="file-input"/>
+    </div>
+    <div class="container1">
+        <input type="text" id="box" placeholder="Search anything..." class="search__box">
+        <i class="fas fa-search search__icon" id="icon" onclick="toggleShow()"></i>
+    </div>
+
+    <!-- Footer -->
+    <footer>
+        <small>&copy; Copyright 2021</small>
+     </footer>
 </body>
+
+</html>
+
+
