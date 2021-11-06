@@ -11,57 +11,128 @@ const assembly = axios.create({
   },
 });
 
+let words = null;
+let audio_url = null;
 // function sleep(ms) {
 //   return new Promise(resolve => setTimeout(resolve, ms));
 // }
 
-export async function checkIDStaggered() {
-  console.log(window.status);
-  setInterval(checkID, 5000);
-  let end = checkID(window.most_recent_id);
-  if(window.status === 'completed'){clearInterval(checkID)}
 
+
+export async function checkIDStaggered(id) {
+  console.log(window.status);
+  let a = function() {checkID(id)}
+  setInterval(a, 5000);
 }
 
 export async function getAndCheckID() {
 
+  let bigdiv = document.getElementById('bigdiv');
+  bigdiv.innerHTML = `<p>Please wait...\nThis could take a few minutes.</p>`;
   let transcript_resp = await assembly
     .post(`/transcript`, {
-      audio_url: "https://s3-us-west-2.amazonaws.com/blog.assemblyai.com/audio/8-7-2018-post/7510.mp3"
+      audio_url: "https://www.americanrhetoric.com/mp3clips/barackobama/barackobamafederalplaza.mp3"
     })
     .catch((err) => console.error(err));
     
     window.most_recent_id = transcript_resp.data.id;
-    console.log('getting new id');
+    console.log('your id:' + window.most_recent_id);
 
     checkIDStaggered(window.most_recent_id);
 }
 
 async function checkID(id) { 
 
-  console.log(id)
-  let end_data = await assembly
-  .get(`/transcript/${id}`)
-  .then((e) => {   
-    window.status = e.data.status;
-    if(e.data.status === 'completed') {
-      console.log(e.data.text);
-      let testtext = document.getElementById('testtext');
-      testtext.innerHTML = e.data.words.map(word => `${word['text']} ${word['start']/1000}-${word['end']/1000}`).join('\n');
-    }
+  if(window.status !== 'completed') {
+    console.log(window.status);
+    let end_data = await assembly
+    .get(`/transcript/${id}`)
+    .then((e) => {   
+      window.status = e.data.status;
+      if(e.data.status === 'completed') {
+        console.log(e.data.text);
+        audio_url = e.data.audio_url;
+        console.log(audio_url);
+        let bigdiv = document.getElementById('bigdiv');
+        bigdiv.innerHTML = `<div id = 'media'>` + checkMedia() + `</div>
+        <input id = 'wordsearch' placeholder='Search for a word or phrase...'></input>`+
+        `<div id = 'wordtable'></div>`; 
+        let wordsearch = document.getElementById('wordsearch');
+        wordsearch.onchange = updateSearch;
+        words = Array.from(e.data.words);
+        displayWordsTable(words);
+
+      }
   })
   .catch((err) => console.error(err));
-  // window.status = end_data.data.status;
-  console.log(window.status);
 
   return end_data;
+}
+  return null;
+}
+
+function updateSearch()
+{
+  console.log(document.getElementById('wordsearch').value);
+  let inputtext = document.getElementById('wordsearch').value;
+  let successWords = [];
+  if(words != null && inputtext.length > 0)
+   {
+      words.forEach(word => word['text'].toLowerCase().includes(inputtext.toLowerCase()) ? successWords.push(word) : 0);
+      displayWordsTable(inputtext.length == 0 ? words : successWords);
+      
+      //update clicks
+    }
+}
+
+function displayWordsTable(words)
+{
+   document.getElementById('wordtable').innerHTML = `<table><tr><td>Word</td><td>Time (s)</td></tr>
+    ${words.map(word => `<tr><td id = 'word${word['start']}'>${word['text']}</td><td><button id = 'button${word['start']}'>${word['start']/1000}</button></td></tr>`).join('')}
+    </table>`;
+    let aud = document.getElementById('aud');
+    words.forEach(word => document.getElementById('button' + word['start']).onclick = 
+    function() {
+      aud.currentTime = word['start']/1000;
+      aud.play();  
+    });
+}
+
+// function setAudio(time)
+// {
+//     let aud = document.getElementById('aud');
+//     if(aud != null) 
+//     {
+//       aud.currentTime = time;
+//       aud.play();      
+//     }
+// }
+
+// function setAudio()
+// {
+//     let aud = document.getElementById('aud');
+//     if(aud != null) 
+//     {
+//       aud.currentTime = parseFloat(this.value);
+//       aud.play();      
+//     }
+// }
+
+function checkMedia()
+{
+  let s = '';
+    //if(audio_url.substring(-4) == '.mp3') {
+    s += `<audio controls id = "aud" src = '${audio_url}'></audio>`;
+  //}
+  console.log(s);
+  return s;
 }
 
 function App() {
   return (
     <div className="App">
-      <p id="testtext">e</p>
-      <button onClick={getAndCheckID}>get id</button>
+      <div id="bigdiv"><p>Send your video file here!</p></div>
+      <button id = 'thebutton' onClick={getAndCheckID}>get id</button>
     </div>
   );
 }
