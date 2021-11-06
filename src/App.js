@@ -1,23 +1,25 @@
 import logo from './logo.svg';
 import './App.css';
+import axios from 'axios';
 
 function App() {
+  const assembly = axios.create({
+    baseURL: "https://api.assemblyai.com/v2",
+    headers: {
+      authorization: "532af0971fd34ae2a954649668cf79a1",
+      "content-type": "application/json",
+    },
+  });
+  
+  assembly
+    .post(`/transcript`, {
+      audio_url: "https://cdn.assemblyai.com/upload/ccbbbfaf-f319-4455-9556-272d48faaf7f"
+    })
+    .then((res) => console.log(res.data))
+    .catch((err) => console.error(err));
   return (
     <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+      testing
     </div>
   );
 }
