@@ -45,7 +45,13 @@ header{
 
 .searchbar-container{
   background-color: #221f26;
+  width: 40vw;
 }
+
+#back{
+  border-radius: 0;
+}
+
 * {
   box-sizing: border-box;
 }
@@ -96,10 +102,12 @@ form.example::after {
 }
 
 .table-container{
-  background-color: gray;
-  width:70vw;
+  border: 15px solid white;
+  border-right: 0px;
+  border-bottom: 0px;
+  width:24vw;
   height: 43vh;
-  margin-left: 14%;
+  overflow: scroll;
 }
 
 footer {
@@ -114,7 +122,6 @@ footer {
   margin-bottom: 10px;
   position: relative;
   top: 1vh;
-
 }
 
 footer p {
@@ -122,4 +129,20 @@ footer p {
     padding: 0;
     border: 0;
     font-size: 1.7vw;
+}
+
+table {
+  position: relative;
+  width: 100%;
+  padding: 15px;
+}
+
+.column-title {
+  color:lightblue;
+}
+
+td {
+  font-size: 20px;
+  border-color: blue;
+  width: 1vw;
 }

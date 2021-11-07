@@ -89,11 +89,8 @@ async function checkID(id) {
 
         <div class= searchbar-container>
             <form class = "example" action = "add action">
-            <button type="submit" id='back'>BACK</button>
-                <br/>
                 <input id ="wordsearch" type ="text" placeholder="Word/Phrase" name="Search">
             </form> 
-            
         </div>
 
         <div id = 'wordtable' class=table-container>
@@ -133,7 +130,7 @@ function updateSearch()
 
 function displayWordsTable(words)
 {
-   document.getElementById('wordtable').innerHTML = `<table><tr><td>Word</td><td>Time (s)</td></tr>
+   document.getElementById('wordtable').innerHTML = `<table><tr class="column-title" ><td>Word</td><td class="column-title">Time (s)</td></tr>
     ${words.map(word => `<tr><td id = 'word${word['start']}'>${word['text']}</td><td><button id = 'button${word['start']}'>${`${parseInt(word['start']/1000/60)}:${word['start']/1000 % 60 < 10 ? '0' : ''}${Math.round((word['start']/1000 - parseInt(word['start']/1000/60)*60)*100)/100}`}</button></td></tr>`).join('')}
     </table>`;
     let aud = document.getElementById('aud');
