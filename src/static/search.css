@@ -105,7 +105,7 @@ form.example::after {
   border: 15px solid white;
   border-right: 0px;
   border-bottom: 0px;
-  width:24vw;
+  width: 53vw;
   height: 43vh;
   overflow: scroll;
 }
