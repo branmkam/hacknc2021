@@ -1,5 +1,6 @@
 import './App.css';
 import axios from 'axios';
+import fs from 'fs';
 
 window.most_recent_id = null;
 window.status = 'not started';
@@ -17,8 +18,6 @@ let audio_url = null;
 //   return new Promise(resolve => setTimeout(resolve, ms));
 // }
 
-
-
 export async function checkIDStaggered(id) {
   console.log(window.status);
   let a = function() {checkID(id)}
@@ -28,10 +27,12 @@ export async function checkIDStaggered(id) {
 export async function getAndCheckID() {
 
   let bigdiv = document.getElementById('bigdiv');
-  bigdiv.innerHTML = `<p>Please wait...\nThis could take a few minutes.</p>`;
+  bigdiv.innerHTML = `<p>Please wait...
+  This usually takes around 25% of the length of your audio.
+  Do something fun while you're waiting!</p>`;
   let transcript_resp = await assembly
     .post(`/transcript`, {
-      audio_url: "https://www.americanrhetoric.com/mp3clips/barackobama/barackobamafederalplaza.mp3"
+      audio_url: "https://www.dropbox.com/s/kir1aa53wt6849w/AT_T%20TV%20Commercial%20-%20It_s%20Not%20Complicated%20Infinity%20_2_.mp4"
     })
     .catch((err) => console.error(err));
     
@@ -47,21 +48,22 @@ async function checkID(id) {
     console.log(window.status);
     let end_data = await assembly
     .get(`/transcript/${id}`)
-    .then((e) => {   
+    .then((e) => { 
+      console.log(e.data);  
       window.status = e.data.status;
       if(e.data.status === 'completed') {
         console.log(e.data.text);
         audio_url = e.data.audio_url;
         console.log(audio_url);
         let bigdiv = document.getElementById('bigdiv');
-        bigdiv.innerHTML = `<div id = 'media'>` + checkMedia() + `</div>
-        <input id = 'wordsearch' placeholder='Search for a word or phrase...'></input>`+
+        bigdiv.innerHTML = `<div id = 'media'>` + checkMedia() + `</div>` + 
+        `<div id = 'transcriptid'>Transcript ID (save it to revisit later): tbd</div>`
+        `<input id = 'wordsearch' placeholder='Search for a word or phrase...'></input>`+
         `<div id = 'wordtable'></div>`; 
         let wordsearch = document.getElementById('wordsearch');
         wordsearch.onchange = updateSearch;
         words = Array.from(e.data.words);
-        displayWordsTable(words);
-
+        //displayWordsTable(words);
       }
   })
   .catch((err) => console.error(err));
@@ -88,35 +90,15 @@ function updateSearch()
 function displayWordsTable(words)
 {
    document.getElementById('wordtable').innerHTML = `<table><tr><td>Word</td><td>Time (s)</td></tr>
-    ${words.map(word => `<tr><td id = 'word${word['start']}'>${word['text']}</td><td><button id = 'button${word['start']}'>${word['start']/1000}</button></td></tr>`).join('')}
+    ${words.map(word => `<tr><td id = 'word${word['start']}'>${word['text']}</td><td><button id = 'button${word['start']}'>${`${parseInt(word['start']/1000/60)}:${word['start']/1000 % 60 < 10 ? '0' : ''}${Math.round((word['start']/1000 - parseInt(word['start']/1000/60)*60)*100)/100}`}</button></td></tr>`).join('')}
     </table>`;
     let aud = document.getElementById('aud');
     words.forEach(word => document.getElementById('button' + word['start']).onclick = 
     function() {
-      aud.currentTime = word['start']/1000;
+      aud.currentTime = word['start']/1000 - 0.2;
       aud.play();  
     });
 }
-
-// function setAudio(time)
-// {
-//     let aud = document.getElementById('aud');
-//     if(aud != null) 
-//     {
-//       aud.currentTime = time;
-//       aud.play();      
-//     }
-// }
-
-// function setAudio()
-// {
-//     let aud = document.getElementById('aud');
-//     if(aud != null) 
-//     {
-//       aud.currentTime = parseFloat(this.value);
-//       aud.play();      
-//     }
-// }
 
 function checkMedia()
 {
@@ -128,13 +110,63 @@ function checkMedia()
   return s;
 }
 
+async function uploadLocal() {
+  document.getElementById('fileinput').addEventListener('change', handleFileSelect, false);
+}
+
 function App() {
   return (
     <div className="App">
       <div id="bigdiv"><p>Send your video file here!</p></div>
       <button id = 'thebutton' onClick={getAndCheckID}>get id</button>
+      <button id = 'uploadlocal' onClick={uploadLocal}>upload local</button>
+      <input type="file" id = 'fileinput'/>
+      <p id='fileContent'></p>
     </div>
   );
+}
+
+//file select stuff
+
+function handleFileSelect(event) {
+  const reader = new FileReader();
+  reader.onload = handleFileLoad;
+  let t = reader.readAsArrayBuffer(event.target.files[0]);
+  console.log(t);
+}
+
+async function handleFileLoad(event) {
+  console.log(event);
+  document.getElementById('fileContent').textContent = event.target.result;
+  let upload_url = null;
+  assembly
+  //upload file
+  .post("/upload", event.target.result)
+  .then(
+  function(res) {
+    console.log(res.data.upload_url); 
+    assembly
+  .post(`/transcript/`, {audio_url : res.data.upload_url})
+    .then((e) => { 
+      console.log(e.data);  
+      window.status = e.data.status;
+      if(e.data.status === 'completed') {
+        console.log(e.data.text);
+        audio_url = e.data.audio_url;
+        console.log(audio_url);
+        let bigdiv = document.getElementById('bigdiv');
+        bigdiv.innerHTML = `<div id = 'media'>` + checkMedia() + `</div>` + 
+        `<div id = 'transcriptid'>Transcript ID (save it to revisit later): tbd</div>`
+        `<input id = 'wordsearch' placeholder='Search for a word or phrase...'></input>`+
+        `<div id = 'wordtable'></div>`; 
+        let wordsearch = document.getElementById('wordsearch');
+        wordsearch.onchange = updateSearch;
+        words = Array.from(e.data.words);
+        //displayWordsTable(words);
+      }
+    })
+  })
+  .catch((err) => console.error(err));
 }
 
 export default App;
