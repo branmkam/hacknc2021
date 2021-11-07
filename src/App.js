@@ -69,6 +69,8 @@ async function checkID(id) {
 
   if(window.status !== 'completed') {
     console.log(window.status);
+    let msg = document.getElementById('msg');
+    msg.innerHTML = window.status.charAt(0).toUpperCase() + window.status.substring(1);
     let end_data = await assembly
     .get(`/transcript/${id}`)
     .then((e) => { 
