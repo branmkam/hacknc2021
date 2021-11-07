@@ -64,7 +64,7 @@ export async function getAndCheckID() {
   }
 }
 
-//<button type="submit"><i class="fa fa-search"></i></button> - old search button
+
 async function checkID(id) { 
 
   if(window.status !== 'completed') {
@@ -80,6 +80,7 @@ async function checkID(id) {
         console.log(audio_url);
         let bigdiv = document.getElementById('main');
         bigdiv.innerHTML = `<div class = video-container>
+
             <p>In the search bar below type the word/phrase you are looking for!</p>
             <audio id="aud" controls>
                 <source src = ${audio_url} type = "audio/mp3">
@@ -88,8 +89,9 @@ async function checkID(id) {
 
         <div class= searchbar-container>
             <form class = "example" action = "add action">
+            <button type="submit" id='back'>BACK</button>
+                <br/>
                 <input id ="wordsearch" type ="text" placeholder="Word/Phrase" name="Search">
-                
             </form> 
             
         </div>
@@ -143,16 +145,6 @@ function displayWordsTable(words)
     });
 }
 
-function checkMedia()
-{
-  let s = '';
-    //if(audio_url.substring(-4) == '.mp3') {
-    s += `<audio controls id = "aud" src = '${audio_url}'></audio>`;
-  //}
-  console.log(s);
-  return s;
-}
-
 async function uploadLocal() {
   document.getElementById('fileinput').addEventListener('change', handleFileSelect, false);
 }
@@ -171,17 +163,18 @@ function App() {
 
 //file select stuff
 
-function handleFileSelect(event) {
+export function handleFileSelect(event) {
+  document.getElementById('msg-upload').innerHTML = 'Uploading file...';
   const reader = new FileReader();
   reader.onload = handleFileLoad;
   let t = reader.readAsArrayBuffer(event.target.files[0]);
-  console.log(t);
 }
 
 async function handleFileLoad(event) {
   console.log(event);
-  document.getElementById('fileContent').textContent = event.target.result;
+  //document.getElementById('fileContent').textContent = event.target.result;
   let upload_url = null;
+  let msg = document.getElementById('msg-upload');
   assembly
   //upload file
   .post("/upload", event.target.result)
@@ -199,16 +192,18 @@ async function handleFileLoad(event) {
         console.log(audio_url);
         let bigdiv = document.getElementById('main');
         bigdiv.innerHTML = `<div class = video-container>
-        <p>In the search bar below type the word/phrase you are looking for!</p>
-        <audio id="aud" controls>
-            <source src = ${audio_url} type = "audio/mp3">
-        </audio>
+
+            <p>In the search bar below type the word/phrase you are looking for!</p>
+            <audio id="aud" controls>
+                <source src = ${audio_url} type = "audio/mp3">
+            </audio>
         </div>
 
         <div class= searchbar-container>
             <form class = "example" action = "add action">
+            <button type="submit" id='back'>BACK</button>
+                <br/>
                 <input id ="wordsearch" type ="text" placeholder="Word/Phrase" name="Search">
-                
             </form> 
             
         </div>
@@ -219,6 +214,12 @@ async function handleFileLoad(event) {
         wordsearch.onchange = updateSearch;
         words = Array.from(e.data.words);
         //displayWordsTable(words);
+      }
+      else if(window.status == 'error')
+      {
+        let msg = document.getElementById('msg');
+        msg.innerHTML = 'Error, invalid URL!';
+        window.status = 'not started';
       }
     })
   })
