@@ -64,6 +64,7 @@ export async function getAndCheckID() {
   }
 }
 
+//<button type="submit"><i class="fa fa-search"></i></button> - old search button
 async function checkID(id) { 
 
   if(window.status !== 'completed') {
@@ -88,7 +89,7 @@ async function checkID(id) {
         <div class= searchbar-container>
             <form class = "example" action = "add action">
                 <input id ="wordsearch" type ="text" placeholder="Word/Phrase" name="Search">
-                <button type="submit"><i class="fa fa-search"></i></button>
+                
             </form> 
             
         </div>
@@ -196,11 +197,24 @@ async function handleFileLoad(event) {
         console.log(e.data.text);
         audio_url = e.data.audio_url;
         console.log(audio_url);
-        let bigdiv = document.getElementById('bigdiv');
-        bigdiv.innerHTML = `<div id = 'media'>` + checkMedia() + `</div>` + 
-        `<div id = 'transcriptid'>Transcript ID (save it to revisit later): tbd</div>`
-        `<input id = 'wordsearch' placeholder='Search for a word or phrase...'></input>`+
-        `<div id = 'wordtable'></div>`; 
+        let bigdiv = document.getElementById('main');
+        bigdiv.innerHTML = `<div class = video-container>
+        <p>In the search bar below type the word/phrase you are looking for!</p>
+        <audio id="aud" controls>
+            <source src = ${audio_url} type = "audio/mp3">
+        </audio>
+        </div>
+
+        <div class= searchbar-container>
+            <form class = "example" action = "add action">
+                <input id ="wordsearch" type ="text" placeholder="Word/Phrase" name="Search">
+                
+            </form> 
+            
+        </div>
+
+        <div id = 'wordtable' class=table-container>
+        </div>`; 
         let wordsearch = document.getElementById('wordsearch');
         wordsearch.onchange = updateSearch;
         words = Array.from(e.data.words);
