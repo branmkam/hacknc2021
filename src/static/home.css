@@ -1,141 +1,161 @@
+/* Background stuff */
+
 html {
-    background-color: black;
-    font-family:'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
+  background-color: black;
+  font-family:'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
 
 }
 
 body {
-    margin: 0;
+  margin: 0;
 }
 
-/* .whole-container {
-    width: 100%;
-    height: 100%;
-} */
+/* End background stuff*/
+
+
+/* Header */
 
 header {
-    /* height: 50px; */
-    width: 90%;
-    /* background-color: lightblue; */
-    font-family: 'Lobster', cursive;
-    border-radius: 20px;
-    margin: 0 auto;
+  width: 92%;
+  font-family: 'Lobster', cursive;
+  border-radius: 20px;
+  margin: 0 auto;
 }
 
 header h1 {
-    margin: 30px;
-    padding: 30px;
-    /* background-color: lightblue; */
-    color: lightblue;
-    padding-top: 10px;
-    margin-top: 0px;
-    margin-bottom: 10px;
-    padding-bottom: 5px;
-    font-size: 4vw;
+  margin: 30px;
+  padding: 30px;
+  padding-left: 0px;
+  color: lightblue;
+  padding-top: 10px;
+  margin-top: 0px;
+  margin-bottom: 10px;
+  padding-bottom: 5px;
+  font-size: 4vw;
 }
 
 .line {
-    height: 1px;
-    width: 92%;
-    background-color: white;
-    margin: 0 auto;
-    margin-bottom: 60px;
-    /* border-radius: 100%; */
+  height: 1px;
+  width: 92%;
+  background-color: white;
+  margin: 0 auto;
+  margin-left: 30px;
+  margin-right: 30px;
+  margin-bottom: 60px;
 }
 
-/* top navigation bar */
-/*ul {
-  list-style-type: none;
-  margin: 0;
-  padding: 0;
-  overflow: hidden;
-  background-color: lightblue;
+/* End header */
+
+
+/* Nav bar
+
+ul {
+list-style-type: none;
+margin: 0;
+padding: 0;
+overflow: hidden;
+background-color: lightblue;
 }
 
 li {
-  float: right;
+float: right;
 }
 
 li a {
-  font-size: 20px;
-  display: block;
-  color: black;
-  text-align: center;
-  padding: 14px 15px;
-  text-decoration: none;
+font-size: 20px;
+display: block;
+color: black;
+text-align: center;
+padding: 14px 15px;
+text-decoration: none;
 }
 
 li a:hover:not(.active) {
-  background-color: white;
+background-color: white;
 }
 
 .active {
-  background-color: white;
+background-color: white;
 }*/
 
+/* End nav bar */
+
+
 /* Main area! */
+
 main {
-  /* height: 10vh; */
-  /* background-color: black; */
-  display: flex;
-  flex-flow: column nowrap;
-  /* justify-content: center; */
-  align-items: center;
-  color: white;
+display: flex;
+flex-flow: column nowrap;
+align-items: center;
+color: white;
 }
 
 main p {
-    width: 70%;
-    font-size: 2vw;
-    /* text-indent: 4%; */
-    margin: 0.6%;
-    text-align: center;
+  width: 70%;
+  font-size: 2vw;
+  margin: 0.6%;
+  text-align: center;
 }
 
 main label {
-  font-size: 5vw;
-  margin-top: 40px;
-  margin-bottom: 20px;
+font-size: 5vw;
+margin-top: 40px;
+margin-bottom: 20px;
 }
 
 input {
-    padding: 12px;
-    border: 5px solid lightblue;
-    border-radius: 4rem;
-    font-family:'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
+  padding: 12px;
+  border: 5px solid lightblue;
+  border-radius: 4rem;
+  font-family:'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
+  width: 30%;
 }
 
 button {
-  height: auto;
-  background-color: white;
-  border-radius: 4rem;
-  margin-top: 20px;
-  display: flex;
-  flex-flow: row nowrap;
+height: auto;
+background-color: white;
+border-radius: 4rem;
+margin-top: 20px;
+display: flex;
+flex-flow: row nowrap;
+align-items: center;
+justify-content: center;
+}
+
+button p {
+  margin: 0 auto;
+  font-weight: 1000;
   font-size: 2vw;
-  text-align: center;    
+  text-align: center;
   margin-left: 0;
 }
 
+/* End main area */
+
+
+/* Footer */
+
 footer {
-  font-size: 20px;
-  text-align: center;
-  padding-top: 17px;
-  height: 60px;
-  color: white;
-   margin: 0 auto;
-   margin-top: 50px;
-   width: 100%;
-   margin-bottom: 10px;
+font-size: 20px;
+text-align: center;
+padding-top: 17px;
+height: 60px;
+color: white;
+margin: 0 auto;
+margin-top: 50px;
+width: 100%;
+margin-bottom: 10px;
 }
 
 footer p {
   margin: 0;
   padding: 0;
   border: 0;
-}
-
-small{
   font-size: 1.7vw;
 }
 
+small {
+  font-size: 1.7vw;
+}
+
+/* End footer */
