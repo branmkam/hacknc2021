@@ -1,0 +1,60 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <title>Speech Search</title>
+
+    <!-- Link to Bootstrap 4 CSS -->
+    <!-- <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.0/css/bootstrap.min.css" integrity="sha384-9gVQ4dYFwwWSjIDZnLEWnxCjeSWFphJiwGPXr1jddIhOegiu1FwO5qRGvFXOdJZ4" crossorigin="anonymous"> -->
+
+    <!-- a Google font -->
+    <!-- <link href="https://fonts.googleapis.com/css?family=Work+Sans" rel="stylesheet"> -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Lobster&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+
+    <!-- FontAwesome for search icon -->
+    <!-- <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.5.0/css/all.css" integrity="sha384-B4dIYHKNBt8Bc12p+WXckhzcICo0wtJAoU8YZTY5qE0Id1GSseTk6S+L3BlXeVIU" crossorigin="anonymous"> -->
+
+    <!-- Link to your custom stylesheet. Any non-Bootstrap styles you create go in this stylesheet. You can create new classes and IDs, or add new rules for classes that already exist in Bootstrap. Any rules you put in your custom stylesheet will override any styling applied to any elements of the same name in Bootstrap, as long as your custom stylesheet link comes AFTER your Bootstrap CSS link, the way it does here. -->
+    <link rel="stylesheet" type="text/css" href="search.css">
+
+</head>
+<body>
+    <header>
+        <h1 class="project-name"><a href = "home.html">Speech Search</a></h1>
+    </header>
+    <main>
+        <!-- video/audio from home page -->
+        <div class = video-container>
+            <p>In the search bar below type the word/phrase you are looking for!</p>
+            
+            <!--<iframe width="790" height="444" src="https://www.youtube.com/embed/vfyOJ4TSmz0" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe> -->
+
+            <audio controls>
+                <source src = "" type = "audio/mp3">
+            </audio>
+        </div>
+
+        <div class= searchbar-container>
+            <form class = "example" action = "add action">
+                <input type ="text" placeholder="Word/Phrase" name="Search">
+                <button type="submit"><i class="fa fa-search"></i></button>
+            </form> 
+            
+        </div>
+
+        <div class=table-container>
+
+        </div>
+    </main>
+    <footer>
+        Footer
+    </footer>
+</body>
+</body>
+</html>
