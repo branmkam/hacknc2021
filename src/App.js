@@ -1,6 +1,5 @@
 import './App.css';
 import axios from 'axios';
-import fs from 'fs';
 
 window.most_recent_id = null;
 window.status = 'not started';
@@ -26,13 +25,34 @@ export async function checkIDStaggered(id) {
 
 export async function getAndCheckID() {
 
-  let bigdiv = document.getElementById('bigdiv');
-  bigdiv.innerHTML = `<p>Please wait...
-  This usually takes around 25% of the length of your audio.
-  Do something fun while you're waiting!</p>`;
-  let transcript_resp = await assembly
+  let msg = document.getElementById('msg');
+  let urlentry = document.getElementById('urlentry');
+  msg.innerHTML = `Please wait...
+  This usually takes around 25% of the length of your audio.`;
+  if(urlentry.value.trim().length > 0) {
+    let transcript_resp = await assembly
+      .post(`/transcript`, {
+        audio_url: urlentry.value.trim()
+      })
+      .catch((err) => console.error(err));
+    
+      if(transcript_resp != (undefined || null)) {
+        window.most_recent_id = transcript_resp.data.id;
+        console.log('your id:' + window.most_recent_id);
+
+        checkIDStaggered(window.most_recent_id);
+      }
+      else
+      {
+        msg.innerHTML = 'invalid URL!'
+      }
+  }
+  else
+  {
+    msg.innerHTML = `No URL found: using sample speech instead`;
+    let transcript_resp = await assembly
     .post(`/transcript`, {
-      audio_url: "https://www.dropbox.com/s/kir1aa53wt6849w/AT_T%20TV%20Commercial%20-%20It_s%20Not%20Complicated%20Infinity%20_2_.mp4"
+      audio_url: 'https://www.americanrhetoric.com/mp3clips/barackobama/barackobamafederalplaza.mp3'
     })
     .catch((err) => console.error(err));
     
@@ -40,6 +60,8 @@ export async function getAndCheckID() {
     console.log('your id:' + window.most_recent_id);
 
     checkIDStaggered(window.most_recent_id);
+    
+  }
 }
 
 async function checkID(id) { 
@@ -55,15 +77,34 @@ async function checkID(id) {
         console.log(e.data.text);
         audio_url = e.data.audio_url;
         console.log(audio_url);
-        let bigdiv = document.getElementById('bigdiv');
-        bigdiv.innerHTML = `<div id = 'media'>` + checkMedia() + `</div>` + 
-        `<div id = 'transcriptid'>Transcript ID (save it to revisit later): tbd</div>`
-        `<input id = 'wordsearch' placeholder='Search for a word or phrase...'></input>`+
-        `<div id = 'wordtable'></div>`; 
+        let bigdiv = document.getElementById('main');
+        bigdiv.innerHTML = `<div class = video-container>
+            <p>In the search bar below type the word/phrase you are looking for!</p>
+            <audio id="aud" controls>
+                <source src = ${audio_url} type = "audio/mp3">
+            </audio>
+        </div>
+
+        <div class= searchbar-container>
+            <form class = "example" action = "add action">
+                <input id ="wordsearch" type ="text" placeholder="Word/Phrase" name="Search">
+                <button type="submit"><i class="fa fa-search"></i></button>
+            </form> 
+            
+        </div>
+
+        <div id = 'wordtable' class=table-container>
+        </div>`; 
         let wordsearch = document.getElementById('wordsearch');
         wordsearch.onchange = updateSearch;
         words = Array.from(e.data.words);
         //displayWordsTable(words);
+      }
+      else if(window.status == 'error')
+      {
+        let msg = document.getElementById('msg');
+        msg.innerHTML = 'Error, invalid URL!';
+        window.status = 'not started';
       }
   })
   .catch((err) => console.error(err));
@@ -93,6 +134,7 @@ function displayWordsTable(words)
     ${words.map(word => `<tr><td id = 'word${word['start']}'>${word['text']}</td><td><button id = 'button${word['start']}'>${`${parseInt(word['start']/1000/60)}:${word['start']/1000 % 60 < 10 ? '0' : ''}${Math.round((word['start']/1000 - parseInt(word['start']/1000/60)*60)*100)/100}`}</button></td></tr>`).join('')}
     </table>`;
     let aud = document.getElementById('aud');
+    console.log(aud);
     words.forEach(word => document.getElementById('button' + word['start']).onclick = 
     function() {
       aud.currentTime = word['start']/1000 - 0.2;
